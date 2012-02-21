@@ -26,7 +26,7 @@ public class Player {
 		}
 		catch(Exception e)
 		{
-			System.out.println("Erreur lors de la création des navires ("+this.name+") : ");
+			System.err.println("Ship instantiation error: ("+this.name+") : ");
 			e.printStackTrace();
 		}
 	}

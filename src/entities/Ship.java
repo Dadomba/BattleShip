@@ -17,8 +17,14 @@ public abstract class Ship {
 		this.destroyed = false;
 		this.orientation = orientation;
 
-		if (x < Constant.XMIN || x > Constant.XMAX - ((orientation==HORIZONTAL)?size+1:0) || y < Constant.YMIN || y > Constant.YMAX - ((orientation==VERTICAL)?size+1:0)) {
-			throw new Exception("Erreur lors de la création du navire. Coordonnées OUT OF BOUND !!!");
+		if (x < Constant.XMIN
+				|| x > Constant.XMAX
+						- ((orientation == HORIZONTAL) ? size + 1 : 0)
+				|| y < Constant.YMIN
+				|| y > Constant.YMAX
+						- ((orientation == VERTICAL) ? size + 1 : 0)) {
+			throw new Exception(
+					"Error while constructing a Ship: X or Y OUT OF Range !!!");
 		} else {
 			this.coord = new Coord(x, y);
 		}
@@ -28,13 +34,19 @@ public abstract class Ship {
 		this.destroyed = false;
 		this.orientation = orientation;
 
-		if (coord.getX() < Constant.XMIN || coord.getX() > Constant.XMAX - ((orientation==HORIZONTAL)?size+1:0) || coord.getY() < Constant.YMIN || coord.getY() > Constant.YMAX - ((orientation==VERTICAL)?size+1:0)) {
-			throw new Exception("Erreur lors de la création du navire. Coordonnées OUT OF BOUND !!!");
+		if (coord.getX() < Constant.XMIN
+				|| coord.getX() > Constant.XMAX
+						- ((orientation == HORIZONTAL) ? size + 1 : 0)
+				|| coord.getY() < Constant.YMIN
+				|| coord.getY() > Constant.YMAX
+						- ((orientation == VERTICAL) ? size + 1 : 0)) {
+			throw new Exception(
+					"Error while constructing a Ship: X or Y OUT OF Range !!!");
 		} else {
 			this.coord = new Coord(coord.getX(), coord.getY());
 		}
 	}
-	
+
 	public int getSize() {
 		return size;
 	}
@@ -49,6 +61,10 @@ public abstract class Ship {
 
 	public Coord getCoord() {
 		return coord;
+	}
+
+	public int getOrientation() {
+		return orientation;
 	}
 
 }

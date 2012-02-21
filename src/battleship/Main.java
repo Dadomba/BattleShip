@@ -16,5 +16,6 @@ public class Main {
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.setVisible(true);
 		screen.setLocationRelativeTo(null);// Centrage
+		
 	}
 }
