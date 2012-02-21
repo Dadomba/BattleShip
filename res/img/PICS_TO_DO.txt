@@ -1,0 +1,8 @@
+Ships:
+Aircraft Carrier (5 boxes)
+Battleship (4 boxes)
+Cruiser (3 boxes)
+Destroyer (2 boxes)
+Submarine (1 boxes)
+
+Game Area
