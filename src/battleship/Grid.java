@@ -29,11 +29,12 @@ public class Grid {
 
 	public void placeShip(Ship ship) throws Exception {
 		boolean place_free = true;
+		int orientation = ship.getOrientation();
 		for (int i = 0; i < ship.getSize(); i++) {
 			int Status = caseStatus[ship.getCoord().getX()
-					+ ((ship.getOrientation() == Ship.HORIZONTAL) ? i : 0)][ship
+					+ ((orientation == Ship.HORIZONTAL) ? i : 0)][ship
 					.getCoord().getY()
-					+ ((ship.getOrientation() == Ship.VERTICAL) ? i : 0)];
+					+ ((orientation == Ship.VERTICAL) ? i : 0)];
 			if (Status != Grid.FREE) {
 				place_free = false;
 				break;
@@ -43,20 +44,20 @@ public class Grid {
 			throw new Exception(
 					"The place from "
 							+ ship.getCoord().getX()
-							+ " "
+							+ ","
 							+ ship.getCoord().getY()
-							+ "to"
-							+ (ship.getCoord().getX() + ((ship.getOrientation() == Ship.HORIZONTAL) ? ship
+							+ " to "
+							+ (ship.getCoord().getX() + ((orientation == Ship.HORIZONTAL) ? ship
 									.getSize() - 1 : 0))
-							+ " "
-							+ (ship.getCoord().getY() + ((ship.getOrientation() == Ship.VERTICAL) ? ship
+							+ ","
+							+ (ship.getCoord().getY() + ((orientation == Ship.VERTICAL) ? ship
 									.getSize() - 1 : 0)) + "is not free !");
 		} else {
 			for (int i = 0; i < ship.getSize(); i++) {
 				caseStatus[ship.getCoord().getX()
-						+ ((ship.getOrientation() == Ship.HORIZONTAL) ? i : 0)][ship
+						+ ((orientation == Ship.HORIZONTAL) ? i : 0)][ship
 						.getCoord().getY()
-						+ ((ship.getOrientation() == Ship.VERTICAL) ? i : 0)] = Grid.BUSY;
+						+ ((orientation == Ship.VERTICAL) ? i : 0)] = Grid.BUSY;
 			}
 		}
 	}
