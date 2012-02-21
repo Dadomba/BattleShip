@@ -1,11 +1,5 @@
-1 porte-avions (5 cases)
-2 croiseur (4 cases)
-1 contre-torpilleurs (3 cases)
-1 sous-marin (3 cases)
-2 torpilleurs (2 cases)
-
-1 aircraft	5
-2 battleship	4
-1 submarine	3
-1 cruiser	3
-2 destroyer	2
+Aircraft Carrier (5 boxes) 	x1
+Battleship (4 boxes) 		x1
+Cruiser (3 boxes)			x1
+Destroyer (2 boxes)			x2
+Submarine (1 boxes)			x2

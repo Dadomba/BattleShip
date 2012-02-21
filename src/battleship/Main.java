@@ -12,10 +12,18 @@ public class Main {
 		Player vince = new Player("Vince");
 		Player josh = new Player("Josh");
 		
-		Screen screen = new Screen();
-		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		screen.setVisible(true);
-		screen.setLocationRelativeTo(null);// Centrage
+		Screen.displayPlayerGridInConsole(vince);
+		//Ship Adding Tests
+		/*
+		 * ......
+		 */
+		
+		
+//		Screen screen = new Screen();
+//		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		screen.setVisible(true);
+//		screen.setLocationRelativeTo(null);// Centering
 		
 	}
+	
 }

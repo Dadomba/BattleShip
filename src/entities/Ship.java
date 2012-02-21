@@ -9,12 +9,14 @@ public abstract class Ship {
 	public final static int VERTICAL = 1;
 
 	protected int size;
+	protected boolean placed;
 	protected boolean destroyed;
 	protected Coord coord;
 	protected int orientation = HORIZONTAL;
 
 	protected Ship(int x, int y, int orientation) throws Exception {
 		this.destroyed = false;
+		this.placed = false;
 		this.orientation = orientation;
 
 		if (x < Constant.XMIN

@@ -11,23 +11,34 @@ import entities.Submarine;
 
 public class Player {
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
+	private Grid playerGrid;
+	private Grid opponentGrid;
+
 	private String name;
-	
+
 	public Player(String name) {
 		this.name = name;
-		try{
-			shipList.add(new Aircraft(1,1,Ship.HORIZONTAL));
-			shipList.add(new Battleship(1,1,Ship.HORIZONTAL));
-			shipList.add(new Battleship(1,1,Ship.VERTICAL));
-			shipList.add(new Submarine(1,1,Ship.HORIZONTAL));
-			shipList.add(new Cruiser(1,1,Ship.VERTICAL));
-			shipList.add(new Destroyer(1,1,Ship.HORIZONTAL));
-			shipList.add(new Destroyer(1,1,Ship.VERTICAL));			
-		}
-		catch(Exception e)
-		{
-			System.err.println("Ship instantiation error ("+this.name+") : ");
+		try {
+			playerGrid = new Grid(Grid.BLANK_GRID);
+			opponentGrid = new Grid(Grid.UNKNOWN_GRID);
+		} catch (Exception e) {
+			System.err.println("Grid instantiation error (" + this.name
+					+ ") : ");
 			e.printStackTrace();
 		}
+	}
+
+	public void addShipOnUserGrid(Ship ship) {
+		try{
+			playerGrid.placeShip(ship);
+		} catch (Exception e) {
+			System.err.println("Ship Adding error (" + this.name
+					+ ") : ");
+			e.printStackTrace();
+		}
+	}
+	
+	public Grid getPlayerGrid() {
+		return playerGrid;
 	}
 }

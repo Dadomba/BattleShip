@@ -1,5 +1,7 @@
 package battleship;
 
+import global.Constant;
+
 import javax.swing.JFrame;
 
 public class Screen extends JFrame{
@@ -10,4 +12,16 @@ public class Screen extends JFrame{
 	{
 		pack();
 	}
+	
+	public static void displayPlayerGridInConsole(Player player){
+		Grid playerGrid = player.getPlayerGrid();
+		
+		for(int i = 0; i<Constant.XMAX+1; i++){
+			for(int j = 0; j<Constant.YMAX+1; j++){
+				System.out.print(playerGrid.getCaseStatus(i, j));
+			}
+			System.out.println();
+		}
+	}
+	
 }

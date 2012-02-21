@@ -9,13 +9,29 @@ public class Grid {
 	public static final int MISSED = 2;
 	public static final int TOUCHED = 3;
 	public static final int SINK = 4;
+	public static final int UNKNOWN = 9;
+	
+	public static final int BLANK_GRID = 0;
+	public static final int UNKNOWN_GRID = 9;
 
-	public int[][] caseStatus = new int[Constant.XMAX + 1][Constant.YMAX + 1];
+	private int[][] caseStatus = new int[Constant.XMAX + 1][Constant.YMAX + 1];
+	private int shipOnGrid = 0;
+	private int maximumShips = Constant.AIRCRAFTMAX + Constant.BATTLESHIPMAX
+			+ Constant.CRUISERMAX + Constant.DESTROYERMAX
+			+ Constant.SUBMARINEMAX;
 
-	public Grid() {
+	public Grid(int gridInitialStatus) throws Exception {
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++)
-				caseStatus[i][j] = FREE;
+				if(gridInitialStatus == Grid.BLANK_GRID){
+					caseStatus[i][j] = FREE;
+				}
+				else if(gridInitialStatus == Grid.UNKNOWN_GRID){
+					caseStatus[i][j] = UNKNOWN;
+				}
+				else{
+					throw new Exception("Initial Status of the grid is incorrect.");
+				}
 	}
 
 	public int getCaseStatus(int i, int j) {
