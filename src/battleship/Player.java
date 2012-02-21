@@ -26,7 +26,7 @@ public class Player {
 		}
 		catch(Exception e)
 		{
-			System.err.println("Ship instantiation error: ("+this.name+") : ");
+			System.err.println("Ship instantiation error ("+this.name+") : ");
 			e.printStackTrace();
 		}
 	}
