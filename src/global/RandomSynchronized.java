@@ -7,7 +7,7 @@ public class RandomSynchronized {
 	
 	public static int nextInt(int max)
 	{
-		return rand.nextInt()%max;
+		return rand.nextInt(max);
 	}
 
 	public static double nextDouble(double max)

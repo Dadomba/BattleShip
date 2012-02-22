@@ -21,10 +21,10 @@ public abstract class Ship {
 
 		if (x < Constant.XMIN
 				|| x > Constant.XMAX
-						- ((orientation == HORIZONTAL) ? size + 1 : 0)
+						- ((orientation == HORIZONTAL) ? size - 1 : 0)
 				|| y < Constant.YMIN
 				|| y > Constant.YMAX
-						- ((orientation == VERTICAL) ? size + 1 : 0)) {
+						- ((orientation == VERTICAL) ? size - 1 : 0)) {
 			throw new Exception(
 					"Error while constructing a Ship: X or Y OUT OF Range !!!");
 		} else {
@@ -63,6 +63,10 @@ public abstract class Ship {
 
 	public Coord getCoord() {
 		return coord;
+	}
+	
+	protected void setCoord(int x, int y){
+		this.coord = new Coord(x,y);
 	}
 
 	public int getOrientation() {

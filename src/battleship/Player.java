@@ -2,12 +2,8 @@ package battleship;
 
 import java.util.ArrayList;
 
-import entities.Aircraft;
-import entities.Battleship;
-import entities.Cruiser;
-import entities.Destroyer;
 import entities.Ship;
-import entities.Submarine;
+
 
 public class Player {
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
@@ -28,16 +24,21 @@ public class Player {
 		}
 	}
 
-	public void addShipOnUserGrid(Ship ship) {
-		try{
+	public String getName() {
+		return this.name;
+	}
+
+	public void addShipOnUserGrid(Ship ship) throws Exception {
+		try {
+			shipList.add(ship);
 			playerGrid.placeShip(ship);
 		} catch (Exception e) {
-			System.err.println("Ship Adding error (" + this.name
-					+ ") : ");
+			System.err.println("Ship Adding error (" + this.name + ") : ");
 			e.printStackTrace();
+			throw new Exception();
 		}
 	}
-	
+
 	public Grid getPlayerGrid() {
 		return playerGrid;
 	}
