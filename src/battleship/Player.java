@@ -1,43 +1,42 @@
 package battleship;
 
-import java.util.ArrayList;
+import battleship.entities.Ship;
 
-import entities.Aircraft;
-import entities.Battleship;
-import entities.Cruiser;
-import entities.Destroyer;
-import entities.Ship;
-import entities.Submarine;
 
 public class Player {
-	private ArrayList<Ship> shipList = new ArrayList<Ship>();
+	
 	private Grid playerGrid;
-	private Grid opponentGrid;
 
 	private String name;
 
-	public Player(String name) {
+	public Player(String name, boolean activated) throws Exception {
+		this(name,new Grid(Grid.BLANK_GRID));
+	}
+	
+	public Player(String name, Grid grid)
+	{
 		this.name = name;
 		try {
-			playerGrid = new Grid(Grid.BLANK_GRID);
-			opponentGrid = new Grid(Grid.UNKNOWN_GRID);
+			playerGrid = grid;
 		} catch (Exception e) {
 			System.err.println("Grid instantiation error (" + this.name
 					+ ") : ");
 			e.printStackTrace();
 		}
 	}
+	
+	public String getName() {
+		return this.name;
+	}
 
-	public void addShipOnUserGrid(Ship ship) {
-		try{
+	public void addShipOnUserGrid(Ship ship) throws Exception {
+		try {
 			playerGrid.placeShip(ship);
 		} catch (Exception e) {
-			System.err.println("Ship Adding error (" + this.name
-					+ ") : ");
-			e.printStackTrace();
+			throw new Exception("Ship Adding error (" + this.name + ") : \n" + e.getMessage());
 		}
 	}
-	
+
 	public Grid getPlayerGrid() {
 		return playerGrid;
 	}
