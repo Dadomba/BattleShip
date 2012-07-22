@@ -18,8 +18,8 @@ public class Grid {
 	public static final int UNKNOWN_GRID = 9;
 
 	private int[][] boxStatus = new int[Constant.XMAX + 1][Constant.YMAX + 1];
-	
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
+
 	private int maximumShips = Constant.AIRCRAFTMAX + Constant.BATTLESHIPMAX
 			+ Constant.CRUISERMAX + Constant.DESTROYERMAX
 			+ Constant.SUBMARINEMAX;

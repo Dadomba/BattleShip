@@ -21,6 +21,6 @@ public class Constant {
 	
 	public static final int MAXSHIPSIZE = 5;
 	
-	public static final int LISTENING_PORT = 64322;
-	public static final int SENDING_PORT = 64321;
+	public static final int LISTENING_PORT = 64321;
+	public static final int SENDING_PORT = 64322;
 }

@@ -44,7 +44,8 @@ public class NetworkListener extends Thread{
 					traiterMessage(message);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Opponent is now disconnected !");
+			stopListening();
 		}
 	}
 	

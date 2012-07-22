@@ -2,7 +2,8 @@ package battleship;
 
 import battleship.global.Constant;
 import battleship.global.RandomSynchronized;
-import battleship.network.*;
+import battleship.network.NetworkListener;
+import battleship.network.NetworkWriter;
 
 public class Game extends Thread {
 

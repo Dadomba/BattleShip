@@ -42,8 +42,7 @@ public class AI {
 			for (int j = 0; j < ship_amount[i]; j++) {
 				int fail_counter = 0;
 				String name = typeList.get(i).getClass().getName();
-				Class cl = Class.forName(name);
-				
+				Class cl = Class.forName(name);			
 				do {
 					placing_failed = false;
 					Object new_ship = null;

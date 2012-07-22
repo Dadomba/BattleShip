@@ -28,12 +28,13 @@ public class Player {
 	public String getName() {
 		return this.name;
 	}
-
+	
 	public void addShipOnUserGrid(Ship ship) throws Exception {
 		try {
 			playerGrid.placeShip(ship);
 		} catch (Exception e) {
 			throw new Exception("Ship Adding error (" + this.name + ") : \n" + e.getMessage());
+
 		}
 	}
 
