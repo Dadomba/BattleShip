@@ -29,6 +29,10 @@ public class Screen extends JFrame {
 	private JPanel jp_separator = new JPanel();
 	private JPanel jp_playerArea = new JPanel(new GridLayout(Constant.YMAX+1, Constant.XMAX+1));
 	private JPanel jp_opponnentArea = new JPanel(new GridLayout(Constant.YMAX+1, Constant.XMAX+1));
+	private JPanel jp_infoArea = new JPanel(new BorderLayout());
+	
+	private JPanel jp_playerShipInformations = null;
+	private JPanel jp_opponentShipInformations = null;
 	
 	private JButtonOpponentGrid[][] jButtonOpponentGridList = new JButtonOpponentGrid[Constant.XMAX+1][Constant.YMAX+1];
 	private JButtonPlayerGrid[][] jButtonPlayerGridList = new JButtonPlayerGrid[Constant.XMAX+1][Constant.YMAX+1];
@@ -64,7 +68,16 @@ public class Screen extends JFrame {
 		jp_gameArea.add(jp_opponnentArea,BorderLayout.NORTH);
 		jp_gameArea.add(jp_separator,BorderLayout.CENTER);
 		jp_gameArea.add(jp_playerArea,BorderLayout.SOUTH);
+
+		JLabel jl_playerName = new JLabel(Game.getInstance().getPlayer().getName());
+		JLabel jl_opponentName = new JLabel(Game.getInstance().getOpponent().getName());
+		jp_playerShipInformations = new JPanelShipInformation(jl_playerName,Game.getInstance().getPlayer().getPlayerGrid());
+		jp_opponentShipInformations = new JPanelShipInformation(jl_opponentName,Game.getInstance().getOpponent().getPlayerGrid());
+		jp_infoArea.add(jp_opponentShipInformations, BorderLayout.NORTH);
+		jp_infoArea.add(jp_playerShipInformations, BorderLayout.SOUTH);
+		
 		add(jp_gameArea,BorderLayout.CENTER);
+		add(jp_infoArea,BorderLayout.EAST);
 		
 		//gameArea
 		for(int j = 0 ; j < Constant.YMAX+1; j++)

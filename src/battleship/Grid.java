@@ -1,6 +1,7 @@
 package battleship;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 import battleship.entities.Ship;
 import battleship.global.Constant;
@@ -118,6 +119,7 @@ public class Grid {
 				if (ship.standOn(coord))
 				{
 					int life = ship.hurt();
+					Game.getInstance().sendMessage("hurt:"+shipList.indexOf(ship));
 					if(life == 0)
 					{
 						Coord c = ship.getCoord();
@@ -155,5 +157,20 @@ public class Grid {
 	public void sinkShip(int shipID) {
 		shipList.get(shipID).sink();
 		Game.getInstance().refresh();
+	}
+
+	public void addObserver(Observer observer) {
+		for (Ship s : shipList)
+			s.addObserver(observer);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Ship> getShipList() {
+		
+		return (ArrayList<Ship>) shipList.clone();
+	}
+
+	public int findShipIndex(Ship ship) {
+		return shipList.indexOf(ship);
 	}
 }

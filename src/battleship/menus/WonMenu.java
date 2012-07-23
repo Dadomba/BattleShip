@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import battleship.Game;
+
 public class WonMenu extends JDialog{
 	
 	/**
@@ -16,7 +18,7 @@ public class WonMenu extends JDialog{
 	private static WonMenu wonMenu = null;
 	
 	private JPanel jp_infos = new JPanel();
-	private JLabel jl_infos = new JLabel("Well done, you win !");
+	private JLabel jl_infos = new JLabel("Well done, you beat "+Game.getInstance().getOpponent().getName()+" !");
 	private WonMenu(JFrame frame)
 	{
 		super(frame);
@@ -25,6 +27,7 @@ public class WonMenu extends JDialog{
 		add(jp_infos,BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 	}
 	
 	public static WonMenu getInstance(JFrame frame)

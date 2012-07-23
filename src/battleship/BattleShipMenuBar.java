@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import battleship.menus.*;
 
@@ -18,16 +17,16 @@ public class BattleShipMenuBar extends JMenuBar{
 	private static final long serialVersionUID = 8463130955387027138L;
 	
 	
-	private JMenu jm_file = new JMenu("Fichier");
-	private JMenu jm_network = new JMenu("Reseaux");
-	private JMenu jm_help = new JMenu("Aide");
-	private JMenuItem jmi_newGame = new JMenuItem("Nouvelle Partie");
-	private JMenuItem jmi_save = new JMenuItem("Sauvegarder");
-	private JMenuItem jmi_load = new JMenuItem("Charger");
-	private JMenuItem jmi_quit = new JMenuItem("Quitter");
-	private JMenuItem jmi_connect = new JMenuItem("Connexion");
-	private JMenuItem jmi_connectTo = new JMenuItem("Connexion à...");
-	private JMenuItem jmi_about = new JMenuItem("A propos");
+	private JMenu jm_file = new JMenu("File");
+	private JMenu jm_network = new JMenu("Network");
+	private JMenu jm_help = new JMenu("Help");
+	private JMenuItem jmi_newGame = new JMenuItem("New game");
+	private JMenuItem jmi_save = new JMenuItem("Save");
+	private JMenuItem jmi_load = new JMenuItem("Load");
+	private JMenuItem jmi_quit = new JMenuItem("Quit");
+	private JMenuItem jmi_connect = new JMenuItem("Connection");
+	private JMenuItem jmi_connectTo = new JMenuItem("Connection to...");
+	private JMenuItem jmi_about = new JMenuItem("About");
 	
 	public BattleShipMenuBar()
 	{
@@ -91,7 +90,7 @@ public class BattleShipMenuBar extends JMenuBar{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Game.getInstance().connect(JOptionPane.showInputDialog("Entrez le nom de l'hote ou l'adresse IP :"));
+				NetworkMenu.getInstance().afficher(true);
 			}
 		});
 	}

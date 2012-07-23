@@ -43,7 +43,7 @@ public class Game extends Thread {
 		networkListener.start();
 		
 		screen = Screen.getInstance();
-		SeparatorMessageQueue.getInstance().addMessageToQueue("En attente de connexion");
+		SeparatorMessageQueue.getInstance().addMessageToQueue("Waiting for connection");
 		screen.setVisible(true);
 		
 		while(continueGame)
@@ -90,13 +90,23 @@ public class Game extends Thread {
 	}
 
 	public void connect() {
-			connect("localhost");
+			connect("localhost", Constant.SENDING_PORT);
 	}
 	
-	public void connect(String hote) {
+	public void connect(String hote, int port) {
+//		if(port != networkListener.getPort())
+//		{
+//			networkListener.stopListening();
+//			networkListener = new NetworkListener(port);
+//			networkListener.start();
+//		}
+//		if(networkWriter != null)
+//		{
+//			networkWriter.stopWritting();
+//		}
 		if(networkWriter == null)
 		{
-			networkWriter = new NetworkWriter(hote,Constant.SENDING_PORT);
+			networkWriter = new NetworkWriter(hote,port);
 			networkWriter.start();
 		}
 	}

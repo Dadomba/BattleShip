@@ -3,11 +3,13 @@ package battleship;
 import java.awt.Color;
 import java.awt.Font;
 
+import battleship.global.Constant;
+
 public class SeparatorMessage {
 	
 	private String text = null;
 	private Color color = Color.BLACK;
-	private Font font = new Font("Comic sans ms", Font.BOLD,13);
+	private Font font = Constant.DEFAULT_MESSAGE_FONT;
 	private long displayTime = 0;
 
 	public SeparatorMessage(String text)

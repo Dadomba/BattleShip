@@ -1,9 +1,11 @@
 package battleship.entities;
 
+import java.util.Observable;
+
 import battleship.global.Constant;
 import battleship.global.Coord;
 
-public abstract class Ship {
+public abstract class Ship extends Observable {
 
 	public final static int HORIZONTAL = 0;
 	public final static int VERTICAL = 1;
@@ -13,6 +15,7 @@ public abstract class Ship {
 	protected boolean placed;
 	protected Coord coord;
 	protected int orientation = HORIZONTAL;
+	
 
 	protected Ship(int x, int y, int orientation, int size) throws Exception {
 		this.placed = false;
@@ -94,10 +97,23 @@ public abstract class Ship {
 	public int hurt()
 	{
 		life--;
+		fireUpdate();
 		return life;
 	}
 
 	public void sink() {
 		life = 0;
+		fireUpdate();
+	}
+	
+	public int getLife()
+	{
+		return life;
+	}
+	
+	public void fireUpdate()
+	{
+		setChanged();
+		notifyObservers(life);
 	}
 }

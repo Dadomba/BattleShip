@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import battleship.Game;
+
 public class LostMenu extends JDialog{
 	
 	/**
@@ -17,7 +19,7 @@ public class LostMenu extends JDialog{
 	private static LostMenu lostMenu = null;
 	
 	private JPanel jp_infos = new JPanel();
-	private JLabel jl_infos = new JLabel("Too bad, you loose !");
+	private JLabel jl_infos = new JLabel("Too bad, "+Game.getInstance().getOpponent().getName()+" beat you !");
 	private LostMenu(JFrame frame)
 	{
 		super(frame);
@@ -26,6 +28,7 @@ public class LostMenu extends JDialog{
 		add(jp_infos,BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 	}
 	
 	public static LostMenu getInstance(JFrame frame)

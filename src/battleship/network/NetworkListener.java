@@ -23,6 +23,8 @@ public class NetworkListener extends Thread{
 	{
 		try {
 			serverSocket = new ServerSocket(port);
+			System.out.println("[DEBUG] ServerSocket opened on "+serverSocket.getLocalPort());
+			serverSocket.setSoTimeout(1000);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,21 +33,44 @@ public class NetworkListener extends Thread{
 	@Override
 	public void run()
 	{
-		try {
-			socket = serverSocket.accept();
-			System.out.println("[DEBUG] Connection from : "+socket.getPort());
-			Game.getInstance().connect();
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			while(continueListening)
+		while(continueListening && socket == null)
+		{
+			try
 			{
+				socket = serverSocket.accept();
+			}
+			catch(IOException ex)
+			{
+				System.out.println("[DEBUG] Waiting for connection on port "+serverSocket.getLocalPort());					
+			}
+		}
+		
+		if(!continueListening)
+			return;
+		
+		System.out.println("[DEBUG] Connection from : "+socket.getPort());
+		Game.getInstance().connect();
+		
+		try{
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return;
+		}
+		
+		while(continueListening)
+		{
+			try{
 				String message = br.readLine();
 				System.out.println("[DEBUG] NetworkReader read : "+message+" from "+socket.getPort());
 				if(message != null)
 					traiterMessage(message);
+			} catch (IOException e) {
+				System.out.println("Opponent is now disconnected !");
+				stopListening();
 			}
-		} catch (IOException e) {
-			System.out.println("Opponent is now disconnected !");
-			stopListening();
 		}
 	}
 	
@@ -66,15 +91,20 @@ public class NetworkListener extends Thread{
 			int status = Integer.parseInt(infos[2]);
 			Game.getInstance().getOpponent().getPlayerGrid().setBoxStatus(x,y,status);
 			if(status == Grid.MISSED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Manqué !",Color.BLUE,1500);
+				SeparatorMessageQueue.getInstance().addMessageToQueue("Missed !",Color.BLUE,1500);
 			else if(status == Grid.TOUCHED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Touché !",Color.RED,1500);
+				SeparatorMessageQueue.getInstance().addMessageToQueue("Touched !",Color.RED,1500);
+		}
+		else if(params[0].equals("hurt"))
+		{
+			int index = Integer.parseInt(params[1]);
+			Game.getInstance().getOpponent().getPlayerGrid().getShipList().get(index).hurt();
 		}
 		else if(params[0].equals("sink"))
 		{
 			int shipID = Integer.parseInt(params[1]);
 			Game.getInstance().getOpponent().getPlayerGrid().sinkShip(shipID);
-			SeparatorMessageQueue.getInstance().addMessageToQueue("Coulé !",Color.GREEN,2500);
+			SeparatorMessageQueue.getInstance().addMessageToQueue("Sunk !",Color.GREEN,2500);
 			Game.getInstance().canPlay(true);
 		}
 		else if(params[0].equals("attack"))
@@ -94,5 +124,9 @@ public class NetworkListener extends Thread{
 
 	public void stopListening() {
 		continueListening = false;
+	}
+
+	public int getPort() {
+		return serverSocket.getLocalPort();
 	}
 }

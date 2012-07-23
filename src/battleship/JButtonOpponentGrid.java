@@ -1,11 +1,11 @@
 package battleship;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 
+import battleship.global.Constant;
 import battleship.global.Coord;
 import battleship.listeners.AttackListener;
 
@@ -54,7 +54,7 @@ public class JButtonOpponentGrid extends JButton{
 		int width = getSize().width;
 	
 		g.clearRect(0, 0, width, height);
-		g.setColor(Color.BLACK);
+		g.setColor(Constant.GRID_COLOR);
 		g.drawRect(0, 0, width-1, height-1);
 		
 		int size = (height>width)?width:height;
@@ -64,17 +64,17 @@ public class JButtonOpponentGrid extends JButton{
 		
 		if(status == Grid.MISSED)
 		{
-			g.setColor(Color.BLUE);
+			g.setColor(Constant.MISSED_BOX);
 			g.fillOval(size, size, size, size);
 		}
 		else if(status == Grid.TOUCHED)
 		{
-			g.setColor(Color.RED);
+			g.setColor(Constant.TOUCHED_BOX);
 			g.fillOval(size, size, size, size);
 		}
 		else if(status == Grid.SINK)
 		{
-			g.setColor(Color.GREEN);
+			g.setColor(Constant.SUNK_BOX);
 			g.fillOval(size, size, size, size);
 		}
 	}

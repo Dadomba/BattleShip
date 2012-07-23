@@ -18,6 +18,7 @@ public class NetworkWriter extends Thread{
 	{
 		try {
 			socket = new Socket(ip, port);
+			System.out.println("[DEBUG] Opening socket to "+socket.getInetAddress().getHostAddress()+":"+socket.getPort());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -27,13 +28,20 @@ public class NetworkWriter extends Thread{
 	
 	public void run()
 	{
+		if(socket == null)
+		{
+			System.err.println("Error, wrong initialization of the socket of networkWriter! Thread stopped");
+			return;
+		}
+			
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			send("start:"+Game.getInstance().getRandomStarterPlayer());
 			while(continueWritting)
 			{
-				Thread.sleep(500);
+				Thread.sleep(500);//on verifie toutes les 500ms si il y'a un message a envoyer
 			}
+			System.out.println("[DEBUG] NetworkWriter stopped");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,7 +50,10 @@ public class NetworkWriter extends Thread{
 	public void send(String message)
 	{
 		if(bw == null)
+		{
+			System.err.println("Error, Wrong initialization of the BufferedWriter of networkWriter ! Cannot send the message : \""+message+"\"");
 			return;
+		}
 		try {
 			bw.write(message+"\n");
 			bw.flush();
