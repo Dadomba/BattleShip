@@ -1,7 +1,9 @@
 package battleship;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 
@@ -25,9 +27,20 @@ public class JButtonPlayerGrid extends JButton{
 	public JButtonPlayerGrid(Coord coord)
 	{
 		super();
-		grid = Game.getInstance().getPlayer().getPlayerGrid();
 		this.coord = coord;
 		setEnabled(false);
+	}
+	
+	public void loadGrid()
+	{
+		try
+		{
+			grid = Game.getInstance().getPlayer().getPlayerGrid();
+		}
+		catch(Exception e)
+		{
+			System.err.println("Error loading player grid !");
+		}
 	}
 	
 	public int getStatus()
@@ -48,6 +61,10 @@ public class JButtonPlayerGrid extends JButton{
 	public void paint(Graphics graphics)
 	{
 		Graphics2D g = (Graphics2D) graphics;
+		
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//on affine les traits
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		
 		int height = getSize().height;
 		int width = getSize().width;
 	
@@ -58,27 +75,26 @@ public class JButtonPlayerGrid extends JButton{
 		int size = (height>width)?width:height;
 		size = size/3;
 		
+		g.setColor(Constant.BORDER_SHIP_COLOR);
+		
 		int status = getStatus();
 		
 		if(status == Grid.BUSY)
-		{
-			g.setColor(Constant.UNTOUCHED_SHIP);
-			g.fillOval(size, size, size, size);
-		}
+			draw(g, size, Constant.UNTOUCHED_SHIP);
 		else if(status == Grid.MISSED)
-		{
-			g.setColor(Constant.MISSED_BOX);
-			g.fillOval(size, size, size, size);
-		}
+			draw(g, size, Constant.MISSED_BOX);
 		else if(status == Grid.TOUCHED)
-		{
-			g.setColor(Constant.TOUCHED_BOX);
-			g.fillOval(size, size, size, size);
-		}
+			draw(g, size, Constant.TOUCHED_BOX);
 		else if(status == Grid.SINK)
-		{
-			g.setColor(Constant.SUNK_BOX);
-			g.fillOval(size, size, size, size);
-		}
+			draw(g, size, Constant.SUNK_BOX);
+	}
+	
+	private void draw(Graphics2D g, int size, Color c)
+	{
+		Color tmp = g.getColor();
+		g.fillOval(size, size, size, size);
+		g.setColor(c);
+		g.fillOval(size+1, size+1, size-2, size-2);
+		g.setColor(tmp);
 	}
 }

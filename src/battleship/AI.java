@@ -31,7 +31,7 @@ public class AI {
 		for(int i=0; i<maxAmount.length; i++){
 			if(ship_amount[i]>maxAmount[i]){
 				String name = typeList.get(i).getClass().getSimpleName();
-				throw new Exception("The ship amount of " + name + " specified in parameter is greater than " + Constant.AIRCRAFTMAX + " defined in the file Constant.java");
+				throw new Exception("The ship amount of " + name + " specified in parameter is greater than " + maxAmount[i] + " defined in the file Constant.java");
 			}
 		}
 

@@ -1,4 +1,4 @@
-package battleship.menus;
+package battleship.frames;
 
 import java.awt.BorderLayout;
 import javax.swing.JDialog;
@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import battleship.Game;
+import battleship.global.Constant;
 
 public class WonMenu extends JDialog{
 	
@@ -22,6 +23,7 @@ public class WonMenu extends JDialog{
 	private WonMenu(JFrame frame)
 	{
 		super(frame);
+		setIconImage(Constant.DEFAULT_FRAME_ICON);
 		
 		jp_infos.add(jl_infos);
 		add(jp_infos,BorderLayout.CENTER);

@@ -6,6 +6,11 @@ import battleship.global.RandomSynchronized;
 
 public class Aircraft extends Ship {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2807674951585194165L;
+
 	public Aircraft(int x, int y, int orientation) throws Exception {
 		super(x, y, orientation,Constant.AIRCRAFTSIZE);
 	}

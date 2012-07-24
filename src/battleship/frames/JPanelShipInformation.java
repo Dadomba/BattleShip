@@ -1,4 +1,4 @@
-package battleship;
+package battleship.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,6 +11,9 @@ import java.util.Observer;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import battleship.Game;
+import battleship.Grid;
+import battleship.JLabelBordered;
 import battleship.entities.Ship;
 import battleship.global.Constant;
 
@@ -21,7 +24,7 @@ public class JPanelShipInformation extends JPanel implements Observer{
 	 */
 	private static final long serialVersionUID = 6217329123065271827L;
 	private ArrayList<JLabel> shipListName = new ArrayList<JLabel>();
-	private ArrayList<JLabel> shipListLife = new ArrayList<JLabel>();
+	private ArrayList<JLabelBordered> shipListLife = new ArrayList<JLabelBordered>();
 	private Grid grid = null;
 	
 	public JPanelShipInformation(JLabel playerName,Grid grid) {
@@ -33,8 +36,8 @@ public class JPanelShipInformation extends JPanel implements Observer{
 		Font font = Constant.DEFAULT_INFORMATION_FIELD_FONT;
 		for(Ship s : this.grid.getShipList())
 		{
-			JLabel jl_shipLife = new JLabel(""+s.getLife()+"/"+s.getSize());
-			jl_shipLife.setForeground(Constant.HIGH_LIFE_COLOR);
+			JLabelBordered jl_shipLife = new JLabelBordered(""+s.getLife()+"/"+s.getSize());
+			jl_shipLife.setColors(Constant.HIGH_LIFE_COLOR, Constant.HIGH_LIFE_COLOR_BORDER);
 			jl_shipLife.setFont(font);
 			jl_shipLife.setHorizontalTextPosition(JLabel.RIGHT);
 			shipListLife.add(jl_shipLife);
@@ -46,14 +49,7 @@ public class JPanelShipInformation extends JPanel implements Observer{
 		}
 		
 		JPanel informations = new JPanel(new GridLayout(10,1));
-//		setLayout(new GridBagLayout());
-//		GridBagConstraints gbc = new GridBagConstraints();
-//		gbc.gridx = GridBagConstraints.WEST;
-//		gbc.gridy = GridBagConstraints.RELATIVE;
-//		 
-//		gbc.fill = GridBagConstraints.HORIZONTAL;
-		
-//		gbc.insets = new Insets(30, 30, 30, 30);
+
 		for(int i = 0 ; i < shipListName.size(); i++)
 		{
 			JPanel jp_shipInfo = new JPanel(new BorderLayout());
@@ -94,14 +90,14 @@ public class JPanelShipInformation extends JPanel implements Observer{
 		{
 			shipListLife.get(index).setText(""+life+"/"+maxLife);
 			if(life > maxLife/2)
-				shipListLife.get(index).setForeground(Constant.HIGH_LIFE_COLOR);
+				shipListLife.get(index).setColors(Constant.HIGH_LIFE_COLOR, Constant.HIGH_LIFE_COLOR_BORDER);
 			else
-				shipListLife.get(index).setForeground(Constant.AVERAGE_LIFE_COLOR);
+				shipListLife.get(index).setColors(Constant.AVERAGE_LIFE_COLOR, Constant.AVERAGE_LIFE_COLOR_BORDER);
 		}
 		else
 		{
 			shipListLife.get(index).setText("Sunk");
-			shipListLife.get(index).setForeground(Constant.NO_MORE_LIFE_COLOR);
+			shipListLife.get(index).setColors(Constant.NO_MORE_LIFE_COLOR, Constant.NO_MORE_LIFE_COLOR_BORDER);
 		}
 		
 		Game.getInstance().refresh();

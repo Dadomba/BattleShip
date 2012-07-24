@@ -1,4 +1,4 @@
-package battleship.menus;
+package battleship.frames;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -33,6 +33,7 @@ public class NetworkMenu extends JFrame {
 	private NetworkMenu()
 	{
 		super("Network Configuration");
+		setIconImage(Constant.DEFAULT_FRAME_ICON);
 		
 		setLayout(new GridLayout(3, 2));
 		

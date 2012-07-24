@@ -1,6 +1,13 @@
 package battleship.global;
 
-public class Coord {
+import java.io.Serializable;
+
+public class Coord implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -88052295970496822L;
+	
 	protected int x;
 	protected int y;
 

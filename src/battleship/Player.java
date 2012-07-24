@@ -1,10 +1,17 @@
 package battleship;
 
+import java.io.Serializable;
+
 import battleship.entities.Ship;
 
 
-public class Player {
+public class Player implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -191533529162844442L;
+
 	private Grid playerGrid;
 
 	private String name;
@@ -40,5 +47,18 @@ public class Player {
 
 	public Grid getPlayerGrid() {
 		return playerGrid;
+	}
+
+	public void setPlayerGrid(Grid g) {
+		playerGrid = g;
+	}
+
+	public void setName(String name2) {
+		name = name2;
+	}
+	
+	public void diplayPlayerGridInConsole()
+	{
+		playerGrid.displayGridInConsole();
 	}
 }

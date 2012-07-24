@@ -1,24 +1,27 @@
 package battleship.entities;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import battleship.global.Constant;
 import battleship.global.Coord;
 
-public abstract class Ship extends Observable {
+public abstract class Ship extends Observable implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4541497791004110511L;
+	
 	public final static int HORIZONTAL = 0;
 	public final static int VERTICAL = 1;
 
 	protected int size;
 	protected int life;
-	protected boolean placed;
 	protected Coord coord;
 	protected int orientation = HORIZONTAL;
-	
 
 	protected Ship(int x, int y, int orientation, int size) throws Exception {
-		this.placed = false;
 		this.orientation = orientation;
 		this.size = size;
 		this.life = size;
@@ -115,5 +118,9 @@ public abstract class Ship extends Observable {
 	{
 		setChanged();
 		notifyObservers(life);
+	}
+
+	public void setCoord(Coord coord) {
+		this.coord = coord;
 	}
 }

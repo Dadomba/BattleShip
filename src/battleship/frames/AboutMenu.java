@@ -1,4 +1,4 @@
-package battleship.menus;
+package battleship.frames;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
@@ -8,6 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import battleship.global.Constant;
 
 public class AboutMenu extends JDialog implements WindowListener{
 	
@@ -23,7 +25,7 @@ public class AboutMenu extends JDialog implements WindowListener{
 	private AboutMenu(JFrame frame)
 	{
 		super(frame);
-		
+		setIconImage(Constant.DEFAULT_FRAME_ICON);
 		jp_infos.add(jl_infos);
 		add(jp_infos,BorderLayout.CENTER);
 		pack();

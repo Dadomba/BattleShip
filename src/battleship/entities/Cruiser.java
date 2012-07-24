@@ -6,6 +6,11 @@ import battleship.global.RandomSynchronized;
 
 public class Cruiser extends Ship {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1924411880911219111L;
+
 	public Cruiser(int x, int y, int orientation) throws Exception {
 		super(x, y, orientation, Constant.CRUISERSIZE);
 	}

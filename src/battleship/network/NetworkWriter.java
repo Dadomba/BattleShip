@@ -2,6 +2,7 @@ package battleship.network;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -35,12 +36,20 @@ public class NetworkWriter extends Thread{
 		}
 			
 		try {
+			//Sending the initial grid to the opponent
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject(Game.getInstance().getPlayer());
+			
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			send("start:"+Game.getInstance().getRandomStarterPlayer());
+			
 			while(continueWritting)
 			{
 				Thread.sleep(500);//on verifie toutes les 500ms si il y'a un message a envoyer
 			}
+			
+			oos.close();
+			
 			System.out.println("[DEBUG] NetworkWriter stopped");
 		} catch (Exception e) {
 			e.printStackTrace();

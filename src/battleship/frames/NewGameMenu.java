@@ -1,10 +1,13 @@
-package battleship.menus;
+package battleship.frames;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import battleship.global.Constant;
 
 public class NewGameMenu extends JDialog implements WindowListener{
 	
@@ -19,7 +22,9 @@ public class NewGameMenu extends JDialog implements WindowListener{
 	private NewGameMenu(JFrame frame)
 	{
 		super(frame);
+		setIconImage(Constant.DEFAULT_FRAME_ICON);
 		
+		add(new JLabel("Under construction"));
 		
 		pack();
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

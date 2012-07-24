@@ -7,7 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import battleship.menus.*;
+import battleship.frames.*;
 
 public class BattleShipMenuBar extends JMenuBar{
 	

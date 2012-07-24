@@ -10,10 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import battleship.frames.JPanelShipInformation;
+import battleship.frames.LostMenu;
+import battleship.frames.WonMenu;
 import battleship.global.Constant;
 
-import battleship.menus.LostMenu;
-import battleship.menus.WonMenu;
 
 public class Screen extends JFrame {
 
@@ -26,29 +27,29 @@ public class Screen extends JFrame {
 	private Dimension size = new Dimension(300,600);
 	
 	private JPanel jp_gameArea = new JPanel(new BorderLayout());
-	private JPanel jp_separator = new JPanel();
-	private JPanel jp_playerArea = new JPanel(new GridLayout(Constant.YMAX+1, Constant.XMAX+1));
-	private JPanel jp_opponnentArea = new JPanel(new GridLayout(Constant.YMAX+1, Constant.XMAX+1));
+	private JPanel jp_separator = new JPanel(new BorderLayout());
+	private JPanel jp_playerArea = new JPanel(new GridLayout(Constant.YMAX - Constant.YMIN +1, Constant.XMAX - Constant.XMIN +1));
+	private JPanel jp_opponnentArea = new JPanel(new GridLayout(Constant.YMAX - Constant.YMIN +1, Constant.XMAX - Constant.XMIN +1));
 	private JPanel jp_infoArea = new JPanel(new BorderLayout());
 	
 	private JPanel jp_playerShipInformations = null;
 	private JPanel jp_opponentShipInformations = null;
 	
-	private JButtonOpponentGrid[][] jButtonOpponentGridList = new JButtonOpponentGrid[Constant.XMAX+1][Constant.YMAX+1];
-	private JButtonPlayerGrid[][] jButtonPlayerGridList = new JButtonPlayerGrid[Constant.XMAX+1][Constant.YMAX+1];
+	private JButtonOpponentGrid[][] jButtonOpponentGridList = new JButtonOpponentGrid[Constant.XMAX - Constant.XMIN +1][Constant.YMAX - Constant.YMIN +1];
+	private JButtonPlayerGrid[][] jButtonPlayerGridList = new JButtonPlayerGrid[Constant.XMAX - Constant.XMIN +1][Constant.YMAX - Constant.YMIN +1];
 	
 	private JLabel jl_separatorMessage = new JLabel();
 	
 	private Screen() {
 		super("BattleShip v0.1 - ARUS Joshua & WLOTZKO Vincent");
+		setIconImage(Constant.DEFAULT_FRAME_ICON);
 		
 		// Menu
 		setJMenuBar(menuBar);
 		
-		// Central area
-//		jp_gameArea.setMinimumSize(size);
-//		jp_gameArea.setPreferredSize(size);
-//		jp_gameArea.setMaximumSize(size);
+		jp_infoArea.setMinimumSize(size);
+		jp_infoArea.setPreferredSize(size);
+		jp_infoArea.setMaximumSize(size);
 		
 		Dimension dimSeparatorPanel = new Dimension (10,30);
 		Dimension dimPlayersPanel = new Dimension(size.width,size.height/2 - dimSeparatorPanel.height);
@@ -63,37 +64,61 @@ public class Screen extends JFrame {
 		jp_separator.setPreferredSize(dimSeparatorPanel);
 		jp_separator.setMaximumSize(dimSeparatorPanel);
 		
-		jp_separator.add(jl_separatorMessage);
+		jl_separatorMessage.setHorizontalAlignment(JLabel.CENTER);
+		jl_separatorMessage.setHorizontalTextPosition(JLabel.CENTER);
+		
+		jp_separator.add(jl_separatorMessage, BorderLayout.CENTER);
 		
 		jp_gameArea.add(jp_opponnentArea,BorderLayout.NORTH);
 		jp_gameArea.add(jp_separator,BorderLayout.CENTER);
 		jp_gameArea.add(jp_playerArea,BorderLayout.SOUTH);
-
-		JLabel jl_playerName = new JLabel(Game.getInstance().getPlayer().getName());
-		JLabel jl_opponentName = new JLabel(Game.getInstance().getOpponent().getName());
-		jp_playerShipInformations = new JPanelShipInformation(jl_playerName,Game.getInstance().getPlayer().getPlayerGrid());
-		jp_opponentShipInformations = new JPanelShipInformation(jl_opponentName,Game.getInstance().getOpponent().getPlayerGrid());
-		jp_infoArea.add(jp_opponentShipInformations, BorderLayout.NORTH);
-		jp_infoArea.add(jp_playerShipInformations, BorderLayout.SOUTH);
 		
 		add(jp_gameArea,BorderLayout.CENTER);
 		add(jp_infoArea,BorderLayout.EAST);
 		
 		//gameArea
-		for(int j = 0 ; j < Constant.YMAX+1; j++)
-			for(int i = 0; i < Constant.XMAX+1; i++)
+		for(int i = Constant.XMIN ; i < Constant.XMAX+1; i++)
+			for(int j = Constant.YMIN; j < Constant.YMAX+1; j++)
 			{
-				JButtonOpponentGrid opponentButton = new JButtonOpponentGrid(j,i);
-				jButtonOpponentGridList[j][i] = opponentButton;
+				JButtonOpponentGrid opponentButton = new JButtonOpponentGrid(i,j);
+				jButtonOpponentGridList[i][j] = opponentButton;
 				jp_opponnentArea.add(opponentButton);
-				JButtonPlayerGrid playerButton = new JButtonPlayerGrid(j,i);
-				jButtonPlayerGridList[j][i] = playerButton;
+				JButtonPlayerGrid playerButton = new JButtonPlayerGrid(i,j);
+				jButtonPlayerGridList[i][j] = playerButton;
 				jp_playerArea.add(playerButton);
 			}
 		
+		loadGrids();
+		loadPlayersInformationPanel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setLocationRelativeTo(null);// Centering
+	}
+	
+	public void loadPlayersInformationPanel()
+	{
+		JLabel jl_playerName = new JLabel(Game.getInstance().getPlayer().getName());
+		jp_playerShipInformations = new JPanelShipInformation(jl_playerName,Game.getInstance().getPlayer().getPlayerGrid());
+		if(Game.getInstance().getOpponent() != null)
+		{
+			JLabel jl_opponentName = new JLabel(Game.getInstance().getOpponent().getName());
+			jp_opponentShipInformations = new JPanelShipInformation(jl_opponentName,Game.getInstance().getOpponent().getPlayerGrid());
+			jp_infoArea.add(jp_opponentShipInformations, BorderLayout.NORTH);
+		}
+		
+		jp_infoArea.add(jp_playerShipInformations, BorderLayout.SOUTH);	
+	}
+	
+	public void loadGrids()
+	{
+		if(Game.getInstance().getOpponent() != null)
+			for(JButtonOpponentGrid[] jbTab : jButtonOpponentGridList)
+				for(JButtonOpponentGrid jb : jbTab)
+					jb.loadGrid();
+		if(Game.getInstance().getPlayer() != null)
+			for(JButtonPlayerGrid[] jbTab : jButtonPlayerGridList)
+				for(JButtonPlayerGrid jb : jbTab)
+					jb.loadGrid();
 	}
 	
 	public static Screen getInstance()
@@ -101,20 +126,6 @@ public class Screen extends JFrame {
 		if (screen == null)
 			screen = new Screen();
 		return screen;
-	}
-
-	public static void displayPlayerGridInConsole(Player player) {
-		displayGridInConsole(player.getPlayerGrid());
-	}
-	
-	public static void displayGridInConsole(Grid grid) {
-		for (int i = 0; i < Constant.YMAX + 1; i++) {
-			for (int j = 0; j < Constant.XMAX + 1; j++) {
-				System.out.print(grid.getBoxStatus(j, i) + "  ");
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 
 	public void disableJButtonOpponentGrid(int i,int j)

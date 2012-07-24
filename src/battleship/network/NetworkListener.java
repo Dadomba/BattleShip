@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import battleship.Game;
 import battleship.Grid;
+import battleship.Player;
 import battleship.SeparatorMessageQueue;
 import battleship.global.Coord;
 
@@ -52,6 +54,11 @@ public class NetworkListener extends Thread{
 		Game.getInstance().connect();
 		
 		try{
+			//Reading the opponent initial grid
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			Player opponent = (Player) ois.readObject();
+			Game.getInstance().addOpponent(opponent);
+			
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		}
 		catch(Exception e)

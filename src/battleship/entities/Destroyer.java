@@ -6,6 +6,11 @@ import battleship.global.RandomSynchronized;
 
 public class Destroyer extends Ship {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3883905339027483948L;
+
 	public Destroyer(int x, int y, int orientation) throws Exception {
 		super(x, y, orientation, Constant.DESTROYERSIZE);
 	}

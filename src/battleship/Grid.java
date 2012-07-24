@@ -1,5 +1,6 @@
 package battleship;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observer;
 
@@ -7,7 +8,12 @@ import battleship.entities.Ship;
 import battleship.global.Constant;
 import battleship.global.Coord;
 
-public class Grid {
+public class Grid implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4302077240357035069L;
+	
 	public static final int FREE = 0;
 	public static final int BUSY = 1;
 	public static final int MISSED = 2;
@@ -18,13 +24,13 @@ public class Grid {
 	public static final int BLANK_GRID = 0;
 	public static final int UNKNOWN_GRID = 9;
 
-	private int[][] boxStatus = new int[Constant.XMAX + 1][Constant.YMAX + 1];
+	private int[][] boxStatus = new int[Constant.XMAX - Constant.XMIN + 1][Constant.YMAX -Constant.YMIN + 1];
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
 
 	private int maximumShips = Constant.AIRCRAFTMAX + Constant.BATTLESHIPMAX
 			+ Constant.CRUISERMAX + Constant.DESTROYERMAX
 			+ Constant.SUBMARINEMAX;
-
+	
 	public Grid(int gridInitialStatus) throws Exception {
 		for (int i = Constant.XMIN; i <= Constant.XMAX; i++)
 			for (int j = Constant.YMIN; j <= Constant.YMAX; j++)
@@ -172,5 +178,41 @@ public class Grid {
 
 	public int findShipIndex(Ship ship) {
 		return shipList.indexOf(ship);
+	}
+	
+	public void displayGridInConsole() {
+		for (int i = 0; i < Constant.YMAX + 1; i++) {
+			for (int j = 0; j < Constant.XMAX + 1; j++) {
+				System.out.print(getBoxStatus(j, i) + "  ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+
+	public boolean isFilled(){
+		return shipList.size() == maximumShips;
+	}
+
+	public int tryDeleteShip(int i, int j) {
+		Ship shouldBeRemoved = null;
+		for(Ship s : shipList)
+			if(s.standOn(new Coord(i,j)))
+				shouldBeRemoved = s;
+		if(shouldBeRemoved != null)
+		{
+			i = shouldBeRemoved.getCoord().getX();
+			j = shouldBeRemoved.getCoord().getY();
+			for(int k = 0; k < shouldBeRemoved.getSize(); k++)
+			{
+				if(shouldBeRemoved.getOrientation() == Ship.HORIZONTAL)
+					boxStatus[i+k][j] = Grid.FREE;
+				else
+					boxStatus[i][j+k] = Grid.FREE;
+			}
+			shipList.remove(shouldBeRemoved);
+			return Math.abs(shouldBeRemoved.getSize()-Constant.MAXSHIPSIZE);
+		}
+		return -1;
 	}
 }
