@@ -3,10 +3,10 @@ package battleship.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import battleship.frames.Screen;
 import battleship.global.Coord;
 import battleship.Game;
 import battleship.Grid;
-import battleship.Screen;
 
 public class AttackListener implements ActionListener{
 

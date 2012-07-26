@@ -28,18 +28,14 @@ public class JLabelBordered extends JLabel {
 	}
 	
 	@Override
-	public void paint(Graphics graphics)
+	public void paintComponent(Graphics graphics)
 	{
-		Graphics2D g = (Graphics2D) graphics;
+		super.paintComponent(graphics);
+//		Graphics2D g = (Graphics2D) graphics;
+//		
+//		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//on affine les traits
+//		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+//		
 		
-		super.paint(g);
-		
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//on affine les traits
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		
-		Color tmp = g.getColor();
-		g.setColor(borderColor);
-		g.drawString(getText(), 0, 0);
-		g.setColor(tmp);
 	}
 }

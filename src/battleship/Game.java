@@ -1,5 +1,6 @@
 package battleship;
 
+import battleship.frames.Screen;
 import battleship.global.Constant;
 import battleship.global.RandomSynchronized;
 import battleship.network.NetworkListener;

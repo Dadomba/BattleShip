@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.LinkedList;
 
+import battleship.frames.Screen;
+
 public class SeparatorMessageQueue extends Thread{
 
 	private LinkedList<SeparatorMessage> queue = new LinkedList<SeparatorMessage>();

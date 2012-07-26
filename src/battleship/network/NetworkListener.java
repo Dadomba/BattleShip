@@ -1,6 +1,5 @@
 package battleship.network;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +11,7 @@ import battleship.Game;
 import battleship.Grid;
 import battleship.Player;
 import battleship.SeparatorMessageQueue;
+import battleship.global.Constant;
 import battleship.global.Coord;
 
 public class NetworkListener extends Thread{
@@ -98,9 +98,9 @@ public class NetworkListener extends Thread{
 			int status = Integer.parseInt(infos[2]);
 			Game.getInstance().getOpponent().getPlayerGrid().setBoxStatus(x,y,status);
 			if(status == Grid.MISSED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Missed !",Color.BLUE,1500);
+				SeparatorMessageQueue.getInstance().addMessageToQueue("Missed !",Constant.MISSED_BOX,1500);
 			else if(status == Grid.TOUCHED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Touched !",Color.RED,1500);
+				SeparatorMessageQueue.getInstance().addMessageToQueue("Touched !",Constant.TOUCHED_BOX,1500);
 		}
 		else if(params[0].equals("hurt"))
 		{
@@ -111,7 +111,7 @@ public class NetworkListener extends Thread{
 		{
 			int shipID = Integer.parseInt(params[1]);
 			Game.getInstance().getOpponent().getPlayerGrid().sinkShip(shipID);
-			SeparatorMessageQueue.getInstance().addMessageToQueue("Sunk !",Color.GREEN,2500);
+			SeparatorMessageQueue.getInstance().addMessageToQueue("Sunk !",Constant.SUNK_BOX,2500);
 			Game.getInstance().canPlay(true);
 		}
 		else if(params[0].equals("attack"))

@@ -1,4 +1,4 @@
-package battleship;
+package battleship.frames;
 
 
 import java.awt.BorderLayout;
@@ -9,10 +9,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import battleship.frames.JPanelShipInformation;
-import battleship.frames.LostMenu;
-import battleship.frames.WonMenu;
+import battleship.BattleShipMenuBar;
+import battleship.Game;
+import battleship.JButtonOpponentGrid;
+import battleship.JButtonPlayerGrid;
+import battleship.SeparatorMessage;
 import battleship.global.Constant;
 
 
@@ -91,14 +99,22 @@ public class Screen extends JFrame {
 		loadGrids();
 		loadPlayersInformationPanel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			setDefaultLookAndFeelDecorated(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		pack();
 		setLocationRelativeTo(null);// Centering
 	}
 	
 	public void loadPlayersInformationPanel()
 	{
-		JLabel jl_playerName = new JLabel(Game.getInstance().getPlayer().getName());
-		jp_playerShipInformations = new JPanelShipInformation(jl_playerName,Game.getInstance().getPlayer().getPlayerGrid());
+		jp_infoArea.removeAll();
+		
 		if(Game.getInstance().getOpponent() != null)
 		{
 			JLabel jl_opponentName = new JLabel(Game.getInstance().getOpponent().getName());
@@ -106,6 +122,8 @@ public class Screen extends JFrame {
 			jp_infoArea.add(jp_opponentShipInformations, BorderLayout.NORTH);
 		}
 		
+		JLabel jl_playerName = new JLabel(Game.getInstance().getPlayer().getName());
+		jp_playerShipInformations = new JPanelShipInformation(jl_playerName,Game.getInstance().getPlayer().getPlayerGrid());
 		jp_infoArea.add(jp_playerShipInformations, BorderLayout.SOUTH);	
 	}
 	

@@ -45,8 +45,8 @@ public class Constant {
 	//NETWORK PARAMETERS
 	public static final int DEFAULT_CONNECTION_PORT = 64321;
 	
-	public static final int LISTENING_PORT = 64322;
-	public static final int SENDING_PORT = 64321;
+	public static final int LISTENING_PORT = 64321;
+	public static final int SENDING_PORT = 64322;
 	
 	
 	
@@ -64,19 +64,23 @@ public class Constant {
 	
 	//COLOR PARAMETERS
 	public static final Color DEFAULT_INFORMATION_FIELD_PLAYER_NAME_COLOR = Color.DARK_GRAY;
+	public static final Color GREEN = new Color(0x0D,0x88,0x00);
+	public static final Color CLEAR_GREEN = Color.GREEN;
+	public static final Color BLUE = new Color(0x46,0x71,0xd5);
+	
 	
 	//INFORMATION PANEL LIFE COLOR
-	public static final Color HIGH_LIFE_COLOR = Color.GREEN;
+	public static final Color HIGH_LIFE_COLOR = GREEN;
 	public static final Color HIGH_LIFE_COLOR_BORDER = Color.BLACK;
-	public static final Color AVERAGE_LIFE_COLOR = Color.BLUE;
+	public static final Color AVERAGE_LIFE_COLOR = BLUE;
 	public static final Color AVERAGE_LIFE_COLOR_BORDER = Color.BLACK;
 	public static final Color NO_MORE_LIFE_COLOR = Color.RED;
 	public static final Color NO_MORE_LIFE_COLOR_BORDER = Color.BLACK;
 	
 	//GRID COLORS
-	public static final Color UNTOUCHED_SHIP = Color.GREEN;
+	public static final Color UNTOUCHED_SHIP = CLEAR_GREEN;
 	public static final Color MISSED_BOX = Color.BLACK;
-	public static final Color TOUCHED_BOX = Color.BLUE;
+	public static final Color TOUCHED_BOX = BLUE;
 	public static final Color SUNK_BOX = Color.RED;
 	public static final Color GRID_COLOR = Color.BLACK;
 	public static final Color BORDER_SHIP_COLOR = Color.BLACK;
