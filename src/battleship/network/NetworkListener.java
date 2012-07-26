@@ -7,125 +7,123 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import battleship.Game;
-import battleship.Grid;
-import battleship.Player;
-import battleship.SeparatorMessageQueue;
-import battleship.global.Constant;
-import battleship.global.Coord;
+import battleship.Constant;
+import battleship.Coord;
+import battleship.core.Game;
+import battleship.core.Grid;
+import battleship.core.Player;
+import battleship.ui.SeparatorMessageQueue;
 
-public class NetworkListener extends Thread{
-	 
+public class NetworkListener extends Thread {
+
 	private ServerSocket serverSocket = null;
 	private Socket socket = null;
 	private BufferedReader br = null;
 	public boolean continueListening = true;
-	
-	public NetworkListener(int port)
-	{
+
+	public NetworkListener(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
-			System.out.println("[DEBUG] ServerSocket opened on "+serverSocket.getLocalPort());
+			System.out.println("[DEBUG] ServerSocket opened on "
+					+ serverSocket.getLocalPort());
 			serverSocket.setSoTimeout(1000);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public void run()
-	{
-		while(continueListening && socket == null)
-		{
-			try
-			{
+	public void run() {
+		while (continueListening && socket == null) {
+			try {
 				socket = serverSocket.accept();
-			}
-			catch(IOException ex)
-			{
-				System.out.println("[DEBUG] Waiting for connection on port "+serverSocket.getLocalPort());					
+			} catch (IOException ex) {
+				System.out.println("[DEBUG] Waiting for connection on port "
+						+ serverSocket.getLocalPort());
 			}
 		}
-		
-		if(!continueListening)
+
+		if (!continueListening)
 			return;
-		
-		System.out.println("[DEBUG] Connection from : "+socket.getPort());
+
+		System.out.println("[DEBUG] Connection from : " + socket.getPort());
 		Game.getInstance().connect();
-		
-		try{
-			//Reading the opponent initial grid
-			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+
+		try {
+			// Reading the opponent initial grid
+			ObjectInputStream ois = new ObjectInputStream(
+					socket.getInputStream());
 			Player opponent = (Player) ois.readObject();
 			Game.getInstance().addOpponent(opponent);
-			
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		}
-		catch(Exception e)
-		{
+
+			br = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		
-		while(continueListening)
-		{
-			try{
+
+		while (continueListening) {
+			try {
 				String message = br.readLine();
-				System.out.println("[DEBUG] NetworkReader read : "+message+" from "+socket.getPort());
-				if(message != null)
+				System.out.println("[DEBUG] NetworkReader read : " + message
+						+ " from " + socket.getPort());
+				if (message != null)
 					traiterMessage(message);
 			} catch (IOException e) {
 				System.out.println("Opponent is now disconnected !");
 				stopListening();
 			}
 		}
+
+		try {
+			br.close();
+			socket.close();
+			serverSocket.close();
+		} catch (Exception e) {
+
+		}
+		System.out.println("[DEBUG]NetworkListener stopped");
 	}
-	
-	private void traiterMessage(String message)
-	{
+
+	private void traiterMessage(String message) {
 		String[] params = message.split(":");
-		
-		if(params[0].equals("start"))
-		{
+
+		if (params[0].equals("start")) {
 			double opponentRand = Double.parseDouble(params[1]);
 			Game.getInstance().decideStarterPlayer(opponentRand);
-		}
-		else if(params[0].equals("status"))
-		{
+		} else if (params[0].equals("status")) {
 			String[] infos = params[1].split(",");
 			int x = Integer.parseInt(infos[0]);
 			int y = Integer.parseInt(infos[1]);
 			int status = Integer.parseInt(infos[2]);
-			Game.getInstance().getOpponent().getPlayerGrid().setBoxStatus(x,y,status);
-			if(status == Grid.MISSED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Missed !",Constant.MISSED_BOX,1500);
-			else if(status == Grid.TOUCHED)
-				SeparatorMessageQueue.getInstance().addMessageToQueue("Touched !",Constant.TOUCHED_BOX,1500);
-		}
-		else if(params[0].equals("hurt"))
-		{
+			Game.getInstance().getOpponent().getPlayerGrid()
+					.setBoxStatus(x, y, status);
+			if (status == Grid.MISSED)
+				SeparatorMessageQueue.getInstance().addMessageToQueue(
+						"Missed !", Constant.MISSED_TEXT_COLOR, 1500);
+			else if (status == Grid.TOUCHED)
+				SeparatorMessageQueue.getInstance().addMessageToQueue(
+						"Touched !", Constant.TOUCHED_TEXT_COLOR, 1500);
+		} else if (params[0].equals("hurt")) {
 			int index = Integer.parseInt(params[1]);
-			Game.getInstance().getOpponent().getPlayerGrid().getShipList().get(index).hurt();
-		}
-		else if(params[0].equals("sink"))
-		{
+			Game.getInstance().getOpponent().getPlayerGrid().getShipList()
+					.get(index).hurt();
+		} else if (params[0].equals("sink")) {
 			int shipID = Integer.parseInt(params[1]);
 			Game.getInstance().getOpponent().getPlayerGrid().sinkShip(shipID);
-			SeparatorMessageQueue.getInstance().addMessageToQueue("Sunk !",Constant.SUNK_BOX,2500);
+			SeparatorMessageQueue.getInstance().addMessageToQueue("Sunk !",
+					Constant.SUNK_TEXT_COLOR, 2500);
 			Game.getInstance().canPlay(true);
-		}
-		else if(params[0].equals("attack"))
-		{
+		} else if (params[0].equals("attack")) {
 			String[] infos = params[1].split(",");
 			int x = Integer.parseInt(infos[0]);
 			int y = Integer.parseInt(infos[1]);
-			Game.getInstance().getPlayer().getPlayerGrid().attack(new Coord(x,y));
-		}  
-		else if(params[0].equals("EOT"))
-		{
+			Game.getInstance().getPlayer().getPlayerGrid()
+					.attack(new Coord(x, y));
+		} else if (params[0].equals("EOT")) {
 			Game.getInstance().canPlay(true);
-		}
-		else if(params[0].equals("bye"))
+		} else if (params[0].equals("bye"))
 			stopListening();
 	}
 
@@ -133,7 +131,7 @@ public class NetworkListener extends Thread{
 		continueListening = false;
 	}
 
-	public int getPort() {
+	public int getListeningPort() {
 		return serverSocket.getLocalPort();
 	}
 }

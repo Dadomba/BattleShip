@@ -3,16 +3,16 @@ package battleship.entities;
 import java.io.Serializable;
 import java.util.Observable;
 
-import battleship.global.Constant;
-import battleship.global.Coord;
+import battleship.Constant;
+import battleship.Coord;
 
-public abstract class Ship extends Observable implements Serializable{
+public abstract class Ship extends Observable implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4541497791004110511L;
-	
+
 	public final static int HORIZONTAL = 0;
 	public final static int VERTICAL = 1;
 
@@ -32,15 +32,15 @@ public abstract class Ship extends Observable implements Serializable{
 				|| y < Constant.YMIN
 				|| y > Constant.YMAX
 						- ((orientation == VERTICAL) ? size - 1 : 0)) {
-			throw new Exception(
-					"Error while constructing a Ship: X ("+x+") or Y ("+y+") OUT OF Range !!!");
+			throw new Exception("Error while constructing a Ship: X (" + x
+					+ ") or Y (" + y + ") OUT OF Range !!!");
 		} else {
 			this.coord = new Coord(x, y);
 		}
 	}
 
 	protected Ship(Coord coord, int orientation, int size) throws Exception {
-		this(coord.getX(),coord.getY(),orientation,size);
+		this(coord.getX(), coord.getY(), orientation, size);
 	}
 
 	public int getSize() {
@@ -48,7 +48,7 @@ public abstract class Ship extends Observable implements Serializable{
 	}
 
 	public void setSize(int size) {
-		if(size > 0 || size <= Constant.MAXSHIPSIZE)
+		if (size > 0 || size <= Constant.MAXSHIPSIZE)
 			this.size = size;
 	}
 
@@ -67,7 +67,7 @@ public abstract class Ship extends Observable implements Serializable{
 				|| y < Constant.YMIN
 				|| y > Constant.YMAX
 						- ((orientation == VERTICAL) ? size - 1 : 0)) {
-			return;//on ne change pas les coordonnées
+			return;// on ne change pas les coordonnées
 		}
 		this.coord = new Coord(x, y);
 	}
@@ -75,30 +75,27 @@ public abstract class Ship extends Observable implements Serializable{
 	public int getOrientation() {
 		return orientation;
 	}
-	
-	public boolean standOn(Coord coord)
-	{
+
+	public boolean standOn(Coord coord) {
 		int x = coord.getX();
 		int y = coord.getY();
 		int startx = this.coord.getX();
 		int starty = this.coord.getY();
-		
-		if(orientation == HORIZONTAL)
-		{
-			if(((x-startx) < size) && startx <= x && starty == y)
+
+		if (orientation == HORIZONTAL) {
+			if (((x - startx) < size) && startx <= x && starty == y)
 				return true;
-			else return false;
-		}
-		else
-		{
-			if(((y-starty) < size) && starty <= y && startx == x)
+			else
+				return false;
+		} else {
+			if (((y - starty) < size) && starty <= y && startx == x)
 				return true;
-			else return false;
+			else
+				return false;
 		}
 	}
-	
-	public int hurt()
-	{
+
+	public int hurt() {
 		life--;
 		fireUpdate();
 		return life;
@@ -108,14 +105,12 @@ public abstract class Ship extends Observable implements Serializable{
 		life = 0;
 		fireUpdate();
 	}
-	
-	public int getLife()
-	{
+
+	public int getLife() {
 		return life;
 	}
-	
-	public void fireUpdate()
-	{
+
+	public void fireUpdate() {
 		setChanged();
 		notifyObservers(life);
 	}

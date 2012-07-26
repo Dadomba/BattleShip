@@ -7,74 +7,77 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import battleship.Game;
+import battleship.core.Game;
 
-public class NetworkWriter extends Thread{
+public class NetworkWriter extends Thread {
 
 	private Socket socket = null;
 	public boolean continueWritting = true;
 	private BufferedWriter bw = null;
-	
-	public NetworkWriter(String ip, int port)
-	{
+
+	public NetworkWriter(String ip, int port) {
 		try {
 			socket = new Socket(ip, port);
-			System.out.println("[DEBUG] Opening socket to "+socket.getInetAddress().getHostAddress()+":"+socket.getPort());
+			System.out.println("[DEBUG] Opening socket to "
+					+ socket.getInetAddress().getHostAddress() + ":"
+					+ socket.getPort());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void run()
-	{
-		if(socket == null)
-		{
-			System.err.println("Error, wrong initialization of the socket of networkWriter! Thread stopped");
+
+	public void run() {
+		if (socket == null) {
+			System.err
+					.println("Error, wrong initialization of the socket of networkWriter! Thread stopped");
 			return;
 		}
-			
+
 		try {
-			//Sending the initial grid to the opponent
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			// Sending the initial grid to the opponent
+			ObjectOutputStream oos = new ObjectOutputStream(
+					socket.getOutputStream());
 			oos.writeObject(Game.getInstance().getPlayer());
-			
-			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			send("start:"+Game.getInstance().getRandomStarterPlayer());
-			
-			while(continueWritting)
-			{
-				Thread.sleep(500);//on verifie toutes les 500ms si il y'a un message a envoyer
+
+			bw = new BufferedWriter(new OutputStreamWriter(
+					socket.getOutputStream()));
+			send("start:" + Game.getInstance().getRandomStarterPlayer());
+
+			while (continueWritting) {
+				Thread.sleep(500);// on verifie toutes les 500ms si il y'a un
+									// message a envoyer
 			}
-			
+
 			oos.close();
-			
-			System.out.println("[DEBUG] NetworkWriter stopped");
+			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		System.out.println("[DEBUG] NetworkWriter stopped");
 	}
-	
-	public void send(String message)
-	{
-		if(bw == null)
-		{
-			System.err.println("Error, Wrong initialization of the BufferedWriter of networkWriter ! Cannot send the message : \""+message+"\"");
+
+	public void send(String message) {
+		if (bw == null) {
+			System.err
+					.println("Error, Wrong initialization of the BufferedWriter of networkWriter ! Cannot send the message : \""
+							+ message + "\"");
 			return;
 		}
 		try {
-			bw.write(message+"\n");
+			bw.write(message + "\n");
 			bw.flush();
-			
-			System.out.println("[DEBUG] NetworkWriter send : "+message+" to "+socket.getPort());
+
+			System.out.println("[DEBUG] NetworkWriter send : " + message
+					+ " to " + socket.getPort());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void stopWritting()
-	{
+
+	public void stopWritting() {
 		continueWritting = false;
 	}
 }

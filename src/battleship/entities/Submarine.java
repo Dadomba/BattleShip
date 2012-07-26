@@ -1,11 +1,11 @@
 package battleship.entities;
 
-import battleship.global.Constant;
-import battleship.global.Coord;
-import battleship.global.RandomSynchronized;
+import battleship.Constant;
+import battleship.Coord;
+import battleship.RandomSynchronized;
 
 public class Submarine extends Ship {
-	
+
 	/**
 	 * 
 	 */
