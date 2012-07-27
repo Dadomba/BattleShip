@@ -1,36 +1,35 @@
 package battleship.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
-import javax.swing.JButton;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import battleship.Constant;
 import battleship.Coord;
 import battleship.core.Game;
 import battleship.core.Grid;
+import battleship.entities.Ship;
 
-public class JButtonPlayerGrid extends JButton {
+public class JButtonPlayerGrid extends JButtonGrid {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1722134626493668726L;
-	Grid grid = null;
-	Coord coord = null;
 
 	public JButtonPlayerGrid(int x, int y) {
-		this(new Coord(x, y));
+		super(x, y);
 	}
 
 	public JButtonPlayerGrid(Coord coord) {
-		super();
-		this.coord = coord;
+		super(coord);
 		setEnabled(false);
 	}
 
+	@Override
 	public void loadGrid() {
 		try {
 			grid = Game.getInstance().getPlayer().getPlayerGrid();
@@ -39,56 +38,66 @@ public class JButtonPlayerGrid extends JButton {
 		}
 	}
 
-	public int getStatus() {
-		if (grid == null)
-			return Grid.UNKNOWN;
-		return grid.getBoxStatus(coord.getX(), coord.getY());
-	}
-
-	public Coord getCoord() {
-		if (coord == null)
-			return null;
-		return new Coord(coord);
-	}
-
 	@Override
 	public void paint(Graphics graphics) {
+		super.paint(graphics);
+
 		Graphics2D g = (Graphics2D) graphics;
-
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);// on affine les traits
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
-		int height = getSize().height;
-		int width = getSize().width;
-
-		g.clearRect(0, 0, width, height);
-		g.setColor(Constant.GRID_COLOR);
-		g.drawRect(0, 0, width - 1, height - 1);
-
-		int size = (height > width) ? width : height;
-		size = size / 3;
 
 		g.setColor(Constant.BORDER_SHIP_COLOR);
 
 		int status = getStatus();
 
-		if (status == Grid.BUSY)
-			draw(g, size, Constant.UNTOUCHED_SHIP_BOX_COLOR);
-		else if (status == Grid.MISSED)
+		if (status == Grid.BUSY || status == Grid.TOUCHED || status == Grid.SUNK)
+			// draw(g, size, Constant.UNTOUCHED_SHIP_BOX_COLOR);
+			drawShip(g);
+
+		if (status == Grid.MISSED)
 			draw(g, size, Constant.MISSED_BOX_COLOR);
 		else if (status == Grid.TOUCHED)
 			draw(g, size, Constant.TOUCHED_BOX_COLOR);
-		else if (status == Grid.SINK)
+		else if (status == Grid.SUNK)
 			draw(g, size, Constant.SUNK_BOX_COLOR);
+
 	}
 
-	private void draw(Graphics2D g, int size, Color c) {
-		Color tmp = g.getColor();
-		g.fillOval(size, size, size, size);
-		g.setColor(c);
-		g.fillOval(size + 1, size + 1, size - 2, size - 2);
-		g.setColor(tmp);
+	private void drawShip(Graphics2D g) {
+		int line = -1;
+		int column = -1;
+		int orientation = -1;
+		for (Ship s : grid.getShipList()) {
+			if (s.standOn(coord)) {
+				line = Constant.MAXSHIPSIZE - s.getSize();
+				Coord shipSartCoord = s.getCoord();
+				orientation = s.getOrientation();
+
+				if (orientation == Ship.HORIZONTAL)
+					column = coord.getX() - shipSartCoord.getX();
+				else
+					column = coord.getY() - shipSartCoord.getY();
+			}
+		}
+
+		if (orientation == -1 || Constant.SHIPS_GRAPHICS_FILE == null)
+			return;
+
+		AffineTransform affineTransform = new AffineTransform();
+		if (orientation == Ship.VERTICAL)
+			affineTransform.rotate(Math.toRadians(90), width / 2, height / 2);
+		AffineTransformOp affineTransformOp = new AffineTransformOp(
+				affineTransform, AffineTransformOp.TYPE_BILINEAR);
+
+		Image tmp = Constant.SHIPS_GRAPHICS_FILE.getSubimage(
+				column * Constant.SHIPS_GRAPHICS_FILE_BOX_SIZE,
+				line * Constant.SHIPS_GRAPHICS_FILE_BOX_SIZE,
+				Constant.SHIPS_GRAPHICS_FILE_BOX_SIZE,
+				Constant.SHIPS_GRAPHICS_FILE_BOX_SIZE).getScaledInstance(width,
+				height, Image.SCALE_SMOOTH);
+		// BufferedImage conversion for affineTransformOp.filter
+		BufferedImage boxToDraw = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB);
+		boxToDraw.getGraphics().drawImage(tmp, 0, 0, null);
+
+		g.drawImage(affineTransformOp.filter(boxToDraw, null), 0, 0, null);
 	}
 }

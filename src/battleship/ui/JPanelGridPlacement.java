@@ -95,7 +95,7 @@ public class JPanelGridPlacement extends JPanel implements MouseListener,
 
 		Color tmp = g.getColor();
 		g.setColor(Color.RED);
-		g.fillRect(x, y, scale * 10, scale * 10);
+		g.fillRect(x + 1, y + 1, scale * 10 - 2, scale * 10 - 2);
 		g.setColor(tmp);
 	}
 
@@ -107,9 +107,9 @@ public class JPanelGridPlacement extends JPanel implements MouseListener,
 		int y = (j * scale * 10 + j) + (scale * 10 - size) / 2;
 
 		g.setColor(Constant.BORDER_SHIP_COLOR);
-		g.fillOval(x, y, size, size);
+		g.fillOval(x + 1, y + 1, size, size);
 		g.setColor(Constant.UNTOUCHED_SHIP_BOX_COLOR);
-		g.fillOval(x + 1, y + 1, size - 2, size - 2);
+		g.fillOval(x + 2, y + 2, size - 2, size - 2);
 		g.setColor(tmp);
 	}
 
@@ -179,6 +179,7 @@ public class JPanelGridPlacement extends JPanel implements MouseListener,
 						- Constant.MAXSHIPSIZE)]++;
 				createGridFrame.placeShip(currentShipToPlace);
 				currentShipToPlace = null;
+				createGridFrame.refresh();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

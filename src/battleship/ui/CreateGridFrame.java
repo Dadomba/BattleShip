@@ -59,13 +59,23 @@ public class CreateGridFrame extends JFrame implements WindowListener {
 		}
 
 		jp_grid = new JPanelGridPlacement(this);
-
-		jp_ship.add(jb_addAircraft);
-		jp_ship.add(jb_addBattleship);
-		jp_ship.add(jb_addCruiser);
-		jp_ship.add(jb_addDestroyer);
-		jp_ship.add(jb_addSubmarine);
-
+		
+		JPanel temp = new JPanel();
+		temp.add(jb_addAircraft);
+		jp_ship.add(temp);
+		temp = new JPanel();
+		temp.add(jb_addBattleship);
+		jp_ship.add(temp);
+		temp = new JPanel();
+		temp.add(jb_addCruiser);
+		jp_ship.add(temp);
+		temp = new JPanel();
+		temp.add(jb_addDestroyer);
+		jp_ship.add(temp);
+		temp = new JPanel();
+		temp.add(jb_addSubmarine);
+		jp_ship.add(temp);
+		
 		jb_ok.setEnabled(false);
 
 		jp_buttons.add(jb_ok);
@@ -173,10 +183,8 @@ public class CreateGridFrame extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (jp_grid.allShipsArePlaced()) {
 					Game.getInstance().setPlayer(new Player(playerName, grid));
 					dispose();
-				}
 			}
 		});
 
@@ -230,13 +238,13 @@ public class CreateGridFrame extends JFrame implements WindowListener {
 
 	public void placeShip(Ship ship) throws Exception {
 		grid.placeShip(ship);
-		if (grid.isFilled())
-			jb_ok.setEnabled(true);
-		updateJButtonText();
-
 	}
 
 	public void refresh() {
+		if (!grid.isEmpty())
+			jb_ok.setEnabled(true);
+		else
+			jb_ok.setEnabled(false);
 		updateJButtonText();
 	}
 }

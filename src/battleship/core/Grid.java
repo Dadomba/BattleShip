@@ -18,7 +18,7 @@ public class Grid implements Serializable {
 	public static final int BUSY = 1;
 	public static final int MISSED = 2;
 	public static final int TOUCHED = 3;
-	public static final int SINK = 4;
+	public static final int SUNK = 4;
 	public static final int UNKNOWN = 9;
 
 	public static final int BLANK_GRID = 0;
@@ -128,15 +128,15 @@ public class Grid implements Serializable {
 						int size = ship.getSize();
 						for (int i = 0; i < size; i++) {
 							if (orientation == Ship.HORIZONTAL) {
-								setBoxStatus(c.getX() + i, c.getY(), SINK);
+								setBoxStatus(c.getX() + i, c.getY(), SUNK);
 								Game.getInstance().sendMessage(
 										"status:" + (c.getX() + i) + ","
-												+ c.getY() + "," + SINK);
+												+ c.getY() + "," + SUNK);
 							} else {
-								setBoxStatus(c.getX(), c.getY() + i, SINK);
+								setBoxStatus(c.getX(), c.getY() + i, SUNK);
 								Game.getInstance().sendMessage(
 										"status:" + c.getX() + ","
-												+ (c.getY() + i) + "," + SINK);
+												+ (c.getY() + i) + "," + SUNK);
 							}
 						}
 						Game.getInstance().sendMessage(
@@ -186,10 +186,6 @@ public class Grid implements Serializable {
 		System.out.println();
 	}
 
-	public boolean isFilled() {
-		return shipList.size() == maximumShips;
-	}
-
 	public int tryDeleteShip(int i, int j) {
 		Ship shouldBeRemoved = null;
 		for (Ship s : shipList)
@@ -208,5 +204,9 @@ public class Grid implements Serializable {
 			return Math.abs(shouldBeRemoved.getSize() - Constant.MAXSHIPSIZE);
 		}
 		return -1;
+	}
+
+	public boolean isEmpty() {
+		return shipList.size() == 0;
 	}
 }

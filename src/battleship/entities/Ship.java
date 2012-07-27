@@ -20,12 +20,12 @@ public abstract class Ship extends Observable implements Serializable {
 	protected int life;
 	protected Coord coord;
 	protected int orientation = HORIZONTAL;
-
+	
 	protected Ship(int x, int y, int orientation, int size) throws Exception {
 		this.orientation = orientation;
 		this.size = size;
 		this.life = size;
-
+		
 		if (x < Constant.XMIN
 				|| x > Constant.XMAX
 						- ((orientation == HORIZONTAL) ? size - 1 : 0)

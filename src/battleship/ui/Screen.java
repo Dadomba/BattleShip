@@ -33,13 +33,13 @@ public class Screen extends JFrame {
 	private JPanelShipInformation jp_playerShipInformations = null;
 	private JPanelShipInformation jp_opponentShipInformations = null;
 
-	private JButtonOpponentGrid[][] jButtonOpponentGridList = new JButtonOpponentGrid[Constant.XMAX
+	private JButtonGrid[][] jButtonOpponentGridList = new JButtonGrid[Constant.XMAX
 			- Constant.XMIN + 1][Constant.YMAX - Constant.YMIN + 1];
 	private JButtonPlayerGrid[][] jButtonPlayerGridList = new JButtonPlayerGrid[Constant.XMAX
 			- Constant.XMIN + 1][Constant.YMAX - Constant.YMIN + 1];
 
 	private JLabel jl_separatorMessage = new JLabel();
-
+	
 	private Screen() {
 		super("BattleShip v0.1 - ARUS Joshua & WLOTZKO Vincent");
 		setIconImage(Constant.DEFAULT_FRAME_ICON);
@@ -78,10 +78,9 @@ public class Screen extends JFrame {
 		add(jp_infoArea, BorderLayout.EAST);
 
 		// gameArea
-		for (int i = Constant.XMIN; i < Constant.XMAX + 1; i++)
-			for (int j = Constant.YMIN; j < Constant.YMAX + 1; j++) {
-				JButtonOpponentGrid opponentButton = new JButtonOpponentGrid(i,
-						j);
+		for (int j = Constant.YMIN; j < Constant.YMAX + 1; j++)
+			for (int i = Constant.XMIN; i < Constant.XMAX + 1; i++) {
+				JButtonGrid opponentButton = new JButtonOpponentGrid(i, j);
 				jButtonOpponentGridList[i][j] = opponentButton;
 				jp_opponnentArea.add(opponentButton);
 				JButtonPlayerGrid playerButton = new JButtonPlayerGrid(i, j);
@@ -115,8 +114,8 @@ public class Screen extends JFrame {
 
 	public void loadGrids() {
 		if (Game.getInstance().getOpponent() != null)
-			for (JButtonOpponentGrid[] jbTab : jButtonOpponentGridList)
-				for (JButtonOpponentGrid jb : jbTab)
+			for (JButtonGrid[] jbTab : jButtonOpponentGridList)
+				for (JButtonGrid jb : jbTab)
 					jb.loadGrid();
 		if (Game.getInstance().getPlayer() != null)
 			for (JButtonPlayerGrid[] jbTab : jButtonPlayerGridList)
